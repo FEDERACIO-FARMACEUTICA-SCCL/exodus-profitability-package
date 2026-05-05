@@ -1,0 +1,2224 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Exodus Profitability API",
+    "description": "Documentation for the Exodus Profitability API. This spec is managed as a static JSON file at swagger/api-docs.json in the package.",
+    "version": "1.0.0"
+  },
+  "servers": [
+    {
+      "url": "/api/v2",
+      "description": "API Server"
+    }
+  ],
+  "tags": [
+    {
+      "name": "Dedications & Payments",
+      "description": "Endpoints for Dedications and Payments"
+    },
+    {
+      "name": "Discounts",
+      "description": "Endpoints for Discounts (Generics, Promotional & Parapharmacy)"
+    },
+    {
+      "name": "Generics",
+      "description": "Endpoints for Generics"
+    },
+    {
+      "name": "Organization Information",
+      "description": "Endpoints related to organization information"
+    },
+    {
+      "name": "OTC Detail",
+      "description": "Endpoints for OTC Detail"
+    },
+    {
+      "name": "PVP Margin",
+      "description": "Endpoints for PVP Margin"
+    },
+    {
+      "name": "Reports",
+      "description": "Endpoints for Reports"
+    }
+  ],
+  "paths": {
+    "/dedications-and-payments": {
+      "get": {
+        "tags": [
+          "Dedications & Payments"
+        ],
+        "summary": "Get dedications & payments report",
+        "operationId": "GetDedicationsAndPaymentsReport",
+        "parameters": [
+          {
+            "name": "from_month",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "2024-01"
+            }
+          },
+          {
+            "name": "to_month",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "2024-12"
+            }
+          },
+          {
+            "name": "organization_identifier",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Dedications and payments data",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "dedication": {
+                      "type": "number",
+                      "format": "float",
+                      "example": 999.99
+                    },
+                    "dedication_agreed": {
+                      "type": "number",
+                      "format": "float",
+                      "example": 99.99
+                    },
+                    "dedication_agreed_end": {
+                      "type": "string",
+                      "format": "date-time"
+                    },
+                    "dedication_logistic": {
+                      "type": "number",
+                      "format": "float",
+                      "example": 99.99
+                    },
+                    "dedication_logistic_end": {
+                      "type": "string",
+                      "format": "date-time"
+                    },
+                    "amount_paid": {
+                      "type": "number",
+                      "format": "float",
+                      "example": 999.99
+                    },
+                    "outstanding_amount": {
+                      "type": "number",
+                      "format": "float",
+                      "example": 999.99
+                    },
+                    "total_amount": {
+                      "type": "number",
+                      "format": "float",
+                      "example": 999.99
+                    },
+                    "organization_rank_description": {
+                      "type": "string",
+                      "example": "Lorem ipsum"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation error"
+          },
+          "424": {
+            "description": "Failed dependency [Exodus service error]"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    },
+    "/dedications-and-payments/pending": {
+      "get": {
+        "tags": [
+          "Dedications & Payments"
+        ],
+        "summary": "Get pending payments details",
+        "operationId": "GetPendingPaymentsDetails",
+        "parameters": [
+          {
+            "name": "from_month",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "2024-01"
+            }
+          },
+          {
+            "name": "to_month",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "2024-12"
+            }
+          },
+          {
+            "name": "organization_identifier",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "example": 1
+            }
+          },
+          {
+            "name": "per_page",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "example": 10
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Pending payments details",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "items": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "amount_status": {
+                            "type": "string",
+                            "example": "PENDING"
+                          },
+                          "date": {
+                            "type": "string",
+                            "format": "date-time"
+                          },
+                          "delivery_note": {
+                            "type": "string",
+                            "example": "DN-0001"
+                          },
+                          "laboratory": {
+                            "type": "string",
+                            "example": "Lab A"
+                          },
+                          "laboratory_name": {
+                            "type": "string",
+                            "example": "Laboratory A"
+                          },
+                          "amount": {
+                            "type": "number",
+                            "format": "float",
+                            "example": 999.99
+                          }
+                        }
+                      }
+                    },
+                    "total_count": {
+                      "type": "integer",
+                      "example": 2
+                    },
+                    "page": {
+                      "type": "integer",
+                      "example": 1
+                    },
+                    "page_size": {
+                      "type": "integer",
+                      "example": 10
+                    },
+                    "total_pages": {
+                      "type": "integer",
+                      "example": 1
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation error"
+          },
+          "424": {
+            "description": "Failed dependency [Exodus service error]"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    },
+    "/dedications-and-payments/pending/mark-transferred": {
+      "patch": {
+        "tags": [
+          "Dedications & Payments"
+        ],
+        "summary": "Mark pending payments as transferred",
+        "operationId": "MarkPaymentsAsTransferred",
+        "requestBody": {
+          "required": false,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "organization_identifier": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Payments marked as transferred successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Transfer marked successfully"
+                    },
+                    "updated_count": {
+                      "type": "integer",
+                      "example": 9
+                    },
+                    "delivery_notes_ids": {
+                      "type": "array",
+                      "items": {
+                        "type": "integer"
+                      },
+                      "example": [
+                        9,
+                        99,
+                        999
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation error"
+          },
+          "424": {
+            "description": "Failed dependency [Exodus service error]"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    },
+    "/discounts": {
+      "get": {
+        "tags": [
+          "Discounts"
+        ],
+        "summary": "Get discounts summary data",
+        "operationId": "GetDiscounts",
+        "parameters": [
+          {
+            "name": "from_month",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "2025-01"
+            }
+          },
+          {
+            "name": "to_month",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "2025-11"
+            }
+          },
+          {
+            "name": "organization_identifier",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "example": "S77776"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Discounts summary data",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "company_discount": {
+                      "type": "number",
+                      "format": "float",
+                      "example": 9999.99
+                    },
+                    "company_discount_percentage": {
+                      "type": "number",
+                      "format": "float",
+                      "example": 99.9
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation error"
+          },
+          "424": {
+            "description": "Failed dependency [Exodus service error]"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    },
+    "/discounts/detail": {
+      "get": {
+        "tags": [
+          "Discounts"
+        ],
+        "summary": "Get discounts detail by type",
+        "operationId": "GetDiscountsDetail",
+        "parameters": [
+          {
+            "name": "from_month",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "2025-01"
+            }
+          },
+          {
+            "name": "to_month",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "2025-11"
+            }
+          },
+          {
+            "name": "organization_identifier",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "example": "S77776"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Discounts detail data [FAKE DATA]",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "headers": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "concept": {
+                            "type": "string",
+                            "example": "total_discount_generics"
+                          },
+                          "discount_amount": {
+                            "type": "number",
+                            "format": "float",
+                            "example": 9999.99
+                          },
+                          "products_with_discount": {
+                            "type": "integer",
+                            "nullable": true
+                          },
+                          "medium_discount_percentage": {
+                            "type": "number",
+                            "format": "float",
+                            "example": 99.9
+                          }
+                        }
+                      }
+                    },
+                    "applied_filters": {
+                      "type": "object",
+                      "properties": {
+                        "organization_identifier": {
+                          "type": "string",
+                          "example": "S77776"
+                        },
+                        "from_month": {
+                          "type": "string",
+                          "example": "2025-01"
+                        },
+                        "to_month": {
+                          "type": "string",
+                          "example": "2025-11"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation error"
+          },
+          "424": {
+            "description": "Failed dependency [Exodus service error]"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    },
+    "/discounts/free-sales/parapharmacy/iconika/filters": {
+      "get": {
+        "tags": [
+          "Discounts"
+        ],
+        "summary": "Get Iconika parapharmacy filters [FAKE]",
+        "operationId": "GetDiscountsFreeSalesIconikaParapharmacyFilters",
+        "parameters": [
+          {
+            "name": "organization_identifier",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Iconika parapharmacy filters data [FAKE DATA]"
+          },
+          "422": {
+            "description": "Validation error"
+          },
+          "424": {
+            "description": "Failed dependency [Exodus service error]"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    },
+    "/discounts/free-sales/{type}": {
+      "get": {
+        "tags": [
+          "Discounts"
+        ],
+        "summary": "Get free sales discounts list with pagination",
+        "operationId": "GetDiscountsFreeSales",
+        "parameters": [
+          {
+            "name": "type",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "promotional",
+                "parapharmacy"
+              ],
+              "example": "promotional"
+            }
+          },
+          {
+            "name": "organization_identifier",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "example": "S77776"
+            }
+          },
+          {
+            "name": "search_query",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "example": 1
+            }
+          },
+          {
+            "name": "per_page",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "example": 15
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Paginated list of free sales discounts [FAKE DATA]",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "items": {
+                      "type": "array",
+                      "items": {
+                        "type": "object"
+                      }
+                    },
+                    "total_count": {
+                      "type": "integer"
+                    },
+                    "page": {
+                      "type": "integer"
+                    },
+                    "page_size": {
+                      "type": "integer"
+                    },
+                    "total_pages": {
+                      "type": "integer"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation error"
+          },
+          "424": {
+            "description": "Failed dependency [Exodus service error]"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    },
+    "/discounts/free-sales/{type}/export": {
+      "get": {
+        "tags": [
+          "Discounts"
+        ],
+        "summary": "Export free sales discounts to Excel",
+        "operationId": "ExportDiscountsFreeSales",
+        "parameters": [
+          {
+            "name": "type",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "promotional",
+                "parapharmacy"
+              ],
+              "example": "promotional"
+            }
+          },
+          {
+            "name": "organization_identifier",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "search_query",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Excel file download",
+            "content": {
+              "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet": {
+                "schema": {
+                  "type": "string",
+                  "format": "binary"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation error"
+          },
+          "424": {
+            "description": "Failed dependency [Exodus service error]"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    },
+    "/discounts/free-sales/{type}/iconika/categories": {
+      "get": {
+        "tags": [
+          "Discounts"
+        ],
+        "summary": "Get Iconika categories for parapharmacy",
+        "operationId": "GetDiscountsFreeSalesIconikaCategories",
+        "parameters": [
+          {
+            "name": "type",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "parapharmacy"
+              ],
+              "example": "parapharmacy"
+            }
+          },
+          {
+            "name": "from_month",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "example": "2025-01"
+            }
+          },
+          {
+            "name": "to_month",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "example": "2025-11"
+            }
+          },
+          {
+            "name": "organization_identifier",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Iconika categories data"
+          },
+          "404": {
+            "description": "Not found - Filters only available for parapharmacy type"
+          },
+          "422": {
+            "description": "Validation error"
+          },
+          "424": {
+            "description": "Failed dependency [Exodus service error]"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    },
+    "/discounts/free-sales/{type}/iconika/laboratories": {
+      "get": {
+        "tags": [
+          "Discounts"
+        ],
+        "summary": "Get Iconika laboratories list with pagination [FAKE]",
+        "operationId": "GetDiscountsFreeSalesIconikaLaboratories",
+        "parameters": [
+          {
+            "name": "type",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "promotional",
+                "parapharmacy"
+              ],
+              "example": "promotional"
+            }
+          },
+          {
+            "name": "from_month",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "2025-01"
+            }
+          },
+          {
+            "name": "to_month",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "2025-11"
+            }
+          },
+          {
+            "name": "organization_identifier",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "search_query",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "example": 1
+            }
+          },
+          {
+            "name": "per_page",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "example": 15
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Paginated list of Iconika laboratories [FAKE DATA]"
+          },
+          "422": {
+            "description": "Validation error"
+          },
+          "424": {
+            "description": "Failed dependency [Exodus service error]"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    },
+    "/discounts/free-sales/{type}/iconika/laboratories/export": {
+      "get": {
+        "tags": [
+          "Discounts"
+        ],
+        "summary": "Export Iconika laboratories to Excel [FAKE]",
+        "operationId": "ExportDiscountsFreeSalesIconikaLaboratories",
+        "parameters": [
+          {
+            "name": "type",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "promotional",
+                "parapharmacy"
+              ]
+            }
+          },
+          {
+            "name": "from_month",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "2025-01"
+            }
+          },
+          {
+            "name": "to_month",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "2025-11"
+            }
+          },
+          {
+            "name": "organization_identifier",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "search_query",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Excel file download",
+            "content": {
+              "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet": {
+                "schema": {
+                  "type": "string",
+                  "format": "binary"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation error"
+          },
+          "424": {
+            "description": "Failed dependency [Exodus service error]"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    },
+    "/discounts/free-sales/{type}/iconika/products": {
+      "get": {
+        "tags": [
+          "Discounts"
+        ],
+        "summary": "Get Iconika products list with pagination",
+        "operationId": "GetDiscountsFreeSalesIconikaProducts",
+        "parameters": [
+          {
+            "name": "type",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "promotional",
+                "parapharmacy"
+              ]
+            }
+          },
+          {
+            "name": "from_month",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "2025-01"
+            }
+          },
+          {
+            "name": "to_month",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "2025-11"
+            }
+          },
+          {
+            "name": "organization_identifier",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "search_query",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "example": 1
+            }
+          },
+          {
+            "name": "per_page",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "example": 15
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Paginated list of Iconika products [FAKE DATA]"
+          },
+          "422": {
+            "description": "Validation error"
+          },
+          "424": {
+            "description": "Failed dependency [Exodus service error]"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    },
+    "/discounts/free-sales/{type}/iconika/products/export": {
+      "get": {
+        "tags": [
+          "Discounts"
+        ],
+        "summary": "Export Iconika products to Excel [FAKE]",
+        "operationId": "ExportDiscountsFreeSalesIconikaProducts",
+        "parameters": [
+          {
+            "name": "type",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "promotional",
+                "parapharmacy"
+              ]
+            }
+          },
+          {
+            "name": "from_month",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "2025-01"
+            }
+          },
+          {
+            "name": "to_month",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "2025-11"
+            }
+          },
+          {
+            "name": "organization_identifier",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "search_query",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Excel file download",
+            "content": {
+              "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet": {
+                "schema": {
+                  "type": "string",
+                  "format": "binary"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation error"
+          },
+          "424": {
+            "description": "Failed dependency [Exodus service error]"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    },
+    "/discounts/generics": {
+      "get": {
+        "tags": [
+          "Discounts"
+        ],
+        "summary": "Get generics discounts list with pagination",
+        "operationId": "GetDiscountsGenerics",
+        "parameters": [
+          {
+            "name": "from_month",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "2025-01"
+            }
+          },
+          {
+            "name": "to_month",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "2025-11"
+            }
+          },
+          {
+            "name": "organization_identifier",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "example": "S77776"
+            }
+          },
+          {
+            "name": "search_query",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "example": 1
+            }
+          },
+          {
+            "name": "per_page",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "example": 15
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Paginated list of generic discounts",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "items": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "national_code": {
+                            "type": "string",
+                            "example": "CN001"
+                          },
+                          "description": {
+                            "type": "string"
+                          },
+                          "laboratory_name": {
+                            "type": "string"
+                          },
+                          "taxes": {
+                            "type": "number",
+                            "format": "float",
+                            "example": 21.0
+                          },
+                          "pvl": {
+                            "type": "number",
+                            "format": "float",
+                            "example": 9999.99
+                          },
+                          "discount_percentage": {
+                            "type": "number",
+                            "format": "float",
+                            "example": 99.9
+                          },
+                          "discount_origin": {
+                            "type": "string"
+                          },
+                          "price": {
+                            "type": "number",
+                            "format": "float",
+                            "example": 99.99
+                          }
+                        }
+                      }
+                    },
+                    "total_count": {
+                      "type": "integer"
+                    },
+                    "page": {
+                      "type": "integer"
+                    },
+                    "page_size": {
+                      "type": "integer"
+                    },
+                    "total_pages": {
+                      "type": "integer"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation error"
+          },
+          "424": {
+            "description": "Failed dependency [Exodus service error]"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    },
+    "/discounts/generics/export": {
+      "get": {
+        "tags": [
+          "Discounts"
+        ],
+        "summary": "Export generics discounts to Excel",
+        "operationId": "ExportDiscountsGenerics",
+        "parameters": [
+          {
+            "name": "from_month",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "2025-01"
+            }
+          },
+          {
+            "name": "to_month",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "2025-11"
+            }
+          },
+          {
+            "name": "organization_identifier",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "example": "S77776"
+            }
+          },
+          {
+            "name": "search_query",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Excel file download",
+            "content": {
+              "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet": {
+                "schema": {
+                  "type": "string",
+                  "format": "binary"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation error"
+          },
+          "424": {
+            "description": "Failed dependency [Exodus service error]"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    },
+    "/generics/{type}": {
+      "get": {
+        "tags": [
+          "Generics"
+        ],
+        "summary": "Get generics detail by type",
+        "operationId": "GetGenericsDetail",
+        "parameters": [
+          {
+            "name": "type",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "acofarma",
+                "concentration",
+                "generification"
+              ],
+              "example": "acofarma"
+            }
+          },
+          {
+            "name": "organization_identifier",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "example": "S77776"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Generics detail data. Response structure varies by type."
+          },
+          "422": {
+            "description": "Validation error"
+          },
+          "424": {
+            "description": "Failed dependency [Exodus service error]"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    },
+    "/organization-information": {
+      "get": {
+        "tags": [
+          "Organization Information"
+        ],
+        "summary": "Get organization information",
+        "operationId": "getOrganizationInformation",
+        "parameters": [
+          {
+            "name": "organization_identifier",
+            "in": "query",
+            "description": "Organization identifier filter",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "example": "S77776"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response with organization information",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "type": {
+                      "type": "string",
+                      "example": "ICON"
+                    },
+                    "current_month_visible": {
+                      "type": "boolean",
+                      "example": true
+                    },
+                    "has_sellout": {
+                      "type": "boolean",
+                      "example": true
+                    },
+                    "comercial_organization_type": {
+                      "type": "string",
+                      "enum": [
+                        "NO_SELLOUT",
+                        "NO_SELLOUT_ICONIKA",
+                        "NO_SELLOUT_CFI",
+                        "SELLOUT_ICONIKA",
+                        "SELLOUT_CFI"
+                      ],
+                      "example": "SELLOUT_ICONIKA"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "424": {
+            "description": "Failed dependency [Exodus service error]"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    },
+    "/otc-detail": {
+      "get": {
+        "tags": [
+          "OTC Detail"
+        ],
+        "summary": "Get OTC detail data",
+        "operationId": "GetOtcDetail",
+        "parameters": [
+          {
+            "name": "organization_identifier",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "otc_type",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "PROMOTIONAL"
+            },
+            "description": "OTC type filter (PROMOTIONAL, PARAPHARMACY)"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OTC detail data [FAKE DATA]",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "pharmacy_summary": {
+                      "type": "object",
+                      "properties": {
+                        "billing_amount": {
+                          "type": "number",
+                          "format": "float"
+                        },
+                        "fedefarma_purchase_rotation": {
+                          "type": "number",
+                          "format": "float"
+                        },
+                        "direct_purchase_rotation": {
+                          "type": "number",
+                          "format": "float"
+                        }
+                      }
+                    },
+                    "items": {
+                      "type": "array",
+                      "items": {
+                        "type": "object"
+                      }
+                    },
+                    "data_reliability": {
+                      "type": "boolean",
+                      "example": true
+                    },
+                    "applied_filters": {
+                      "type": "object"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation error"
+          },
+          "424": {
+            "description": "Failed dependency [Exodus service error]"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    },
+    "/pvp-margin": {
+      "get": {
+        "tags": [
+          "PVP Margin"
+        ],
+        "summary": "Get PVP margin data",
+        "operationId": "GetPvpMargin",
+        "parameters": [
+          {
+            "name": "from_month",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "2024-01"
+            }
+          },
+          {
+            "name": "to_month",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "2024-12"
+            }
+          },
+          {
+            "name": "organization_identifier",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "PVP margin data [FAKE DATA]",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "items": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "type": {
+                            "type": "string",
+                            "example": "generics"
+                          },
+                          "margin_percentage": {
+                            "type": "number",
+                            "format": "float"
+                          },
+                          "minimum": {
+                            "type": "number",
+                            "format": "float"
+                          },
+                          "median": {
+                            "type": "number",
+                            "format": "float"
+                          },
+                          "maximum": {
+                            "type": "number",
+                            "format": "float"
+                          }
+                        }
+                      }
+                    },
+                    "applied_filters": {
+                      "type": "object"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation error"
+          },
+          "424": {
+            "description": "Failed dependency [Exodus service error]"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    },
+    "/reports/discounts": {
+      "get": {
+        "tags": [
+          "Reports"
+        ],
+        "summary": "Get discounts report",
+        "operationId": "GetDiscountsReport",
+        "parameters": [
+          {
+            "name": "year",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "2024"
+            }
+          },
+          {
+            "name": "months[]",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "integer"
+              }
+            }
+          },
+          {
+            "name": "laboratory",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "organization_identifier",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Discounts report data"
+          },
+          "422": {
+            "description": "Validation error"
+          },
+          "424": {
+            "description": "Failed dependency [Exodus service error]"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    },
+    "/reports/discounts/export": {
+      "get": {
+        "tags": [
+          "Reports"
+        ],
+        "summary": "Export discounts report to Excel [FAKE]",
+        "operationId": "ExportDiscountsReport",
+        "parameters": [
+          {
+            "name": "year",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "2024"
+            }
+          },
+          {
+            "name": "months[]",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "integer"
+              }
+            }
+          },
+          {
+            "name": "laboratory",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "organization_identifier",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Excel file download",
+            "content": {
+              "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet": {}
+            }
+          },
+          "422": {
+            "description": "Validation error"
+          },
+          "424": {
+            "description": "Failed dependency [Exodus service error]"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    },
+    "/reports/filters/{report_type}": {
+      "get": {
+        "tags": [
+          "Reports"
+        ],
+        "summary": "Get available filters for reports",
+        "operationId": "GetReportsFilters",
+        "parameters": [
+          {
+            "name": "report_type",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "discounts",
+                "free-sales",
+                "generics",
+                "margins"
+              ],
+              "example": "discounts"
+            }
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "example": 1
+            }
+          },
+          {
+            "name": "per_page",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "example": 50
+            }
+          },
+          {
+            "name": "organization_identifier",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Available filters for reports"
+          },
+          "422": {
+            "description": "Validation error"
+          },
+          "424": {
+            "description": "Failed dependency [Exodus service error]"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    },
+    "/reports/free-sales": {
+      "get": {
+        "tags": [
+          "Reports"
+        ],
+        "summary": "Get free sales report",
+        "operationId": "GetFreeSalesReport",
+        "parameters": [
+          {
+            "name": "year",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "2024"
+            }
+          },
+          {
+            "name": "months[]",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "integer"
+              }
+            }
+          },
+          {
+            "name": "classification_type",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "ALL",
+                "PARAPHARMACY",
+                "PROMOTIONAL"
+              ],
+              "default": "ALL"
+            }
+          },
+          {
+            "name": "laboratory",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "organization_identifier",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Free sales report data"
+          },
+          "422": {
+            "description": "Validation error"
+          },
+          "424": {
+            "description": "Failed dependency [Exodus service error]"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    },
+    "/reports/free-sales/export": {
+      "get": {
+        "tags": [
+          "Reports"
+        ],
+        "summary": "Export free sales report to Excel [FAKE]",
+        "operationId": "ExportFreeSalesReport",
+        "parameters": [
+          {
+            "name": "year",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "2024"
+            }
+          },
+          {
+            "name": "months[]",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "integer"
+              }
+            }
+          },
+          {
+            "name": "classification_type",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "ALL",
+                "PARAPHARMACY",
+                "PROMOTIONAL"
+              ]
+            }
+          },
+          {
+            "name": "laboratory",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "organization_identifier",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Excel file download",
+            "content": {
+              "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet": {}
+            }
+          },
+          "422": {
+            "description": "Validation error"
+          },
+          "424": {
+            "description": "Failed dependency [Exodus service error]"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    },
+    "/reports/generics": {
+      "get": {
+        "tags": [
+          "Reports"
+        ],
+        "summary": "Get generics report",
+        "operationId": "GetGenericsReport",
+        "parameters": [
+          {
+            "name": "year",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "2024"
+            }
+          },
+          {
+            "name": "months[]",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "integer"
+              }
+            }
+          },
+          {
+            "name": "laboratory",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "filter_only_club",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "example": false
+            }
+          },
+          {
+            "name": "organization_identifier",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Generics report data"
+          },
+          "422": {
+            "description": "Validation error"
+          },
+          "424": {
+            "description": "Failed dependency [Exodus service error]"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    },
+    "/reports/generics/export": {
+      "get": {
+        "tags": [
+          "Reports"
+        ],
+        "summary": "Export generics report to Excel [FAKE]",
+        "operationId": "ExportGenericsReport",
+        "parameters": [
+          {
+            "name": "year",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "2024"
+            }
+          },
+          {
+            "name": "months[]",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "integer"
+              }
+            }
+          },
+          {
+            "name": "laboratory",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "filter_only_club",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "default": false
+            }
+          },
+          {
+            "name": "organization_identifier",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Excel file download",
+            "content": {
+              "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet": {}
+            }
+          },
+          "422": {
+            "description": "Validation error"
+          },
+          "424": {
+            "description": "Failed dependency [Exodus service error]"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    },
+    "/reports/margins": {
+      "get": {
+        "tags": [
+          "Reports"
+        ],
+        "summary": "Get margins report",
+        "operationId": "GetMarginsReport",
+        "parameters": [
+          {
+            "name": "from_month",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "2024-01"
+            }
+          },
+          {
+            "name": "to_month",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "2024-12"
+            }
+          },
+          {
+            "name": "laboratory",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "organization_identifier",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Margins report data"
+          },
+          "422": {
+            "description": "Validation error"
+          },
+          "424": {
+            "description": "Failed dependency [Exodus service error]"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    },
+    "/reports/margins/export": {
+      "get": {
+        "tags": [
+          "Reports"
+        ],
+        "summary": "Export margins report to Excel [FAKE]",
+        "operationId": "ExportMarginsReport",
+        "parameters": [
+          {
+            "name": "from_month",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "2024-01"
+            }
+          },
+          {
+            "name": "to_month",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "2024-12"
+            }
+          },
+          {
+            "name": "laboratory",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "organization_identifier",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Excel file download",
+            "content": {
+              "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet": {}
+            }
+          },
+          "422": {
+            "description": "Validation error"
+          },
+          "424": {
+            "description": "Failed dependency [Exodus service error]"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "login": {
+        "type": "apiKey",
+        "description": "Enter token in format (Bearer <token>) from login",
+        "name": "Authorization",
+        "in": "header"
+      }
+    }
+  }
+}

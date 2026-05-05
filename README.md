@@ -23,7 +23,7 @@ composer require fedefarma/exodus-profitability-package
 
 3. Publish the configuration file.
 ```bash
-php artisan vendor:publish --provider="ProfitabilityExodus\ProfitabilityExodusServiceProvider" --tag="profitability-exodus-sdk"
+php artisan vendor:publish --tag="profitability-exodus-sdk"
 ```
 
 4. Add the following environment variables to your `.env` file.
@@ -430,6 +430,52 @@ Used in free sales report methods.
 
 > [!NOTE]
 > SSL verification is disabled automatically in non-production environments.
+
+---
+
+## 📖 Swagger / OpenAPI
+
+The package ships a static OpenAPI spec (`swagger/api-docs.json`) and integrates with [l5-swagger](https://github.com/DarkaOnLine/L5-Swagger) for multi-documentation support.
+
+### Setup
+
+1. Register the documentation in your `config/l5-swagger.php`:
+
+```php
+'documentations' => [
+    // ... other docs
+    'exodus' => \ProfitabilityExodus\ProfitabilityExodusSwagger::config(
+        servers: [
+            ['url' => env('APP_URL') . '/api/v2', 'description' => 'API Server'],
+        ]
+    ),
+],
+```
+
+2. The `url` in `servers` must match the prefix you use when registering routes. If your project uses a different prefix, update both:
+
+```php
+// routes/api.php
+ProfitabilityExodusRouter::routes(prefix: 'profitability', middlewares: ['auth:sanctum']);
+
+// config/l5-swagger.php
+'exodus' => \ProfitabilityExodus\ProfitabilityExodusSwagger::config(
+    servers: [
+        ['url' => env('APP_URL') . '/api/profitability', 'description' => 'API Server'],
+    ]
+),
+```
+
+3. The Swagger UI will be available at `api/exodus/documentation` by default. You can change the route:
+
+```php
+\ProfitabilityExodus\ProfitabilityExodusSwagger::config(
+    route: 'api/my-custom/documentation',
+    servers: [...]
+)
+```
+
+> **Note:** Do not run `php artisan l5-swagger:generate exodus`. The spec is static and managed from `swagger/api-docs.json` inside the package. Running the generator would overwrite the storage copy with an empty spec.
 
 ---
 

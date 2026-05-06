@@ -1,0 +1,90 @@
+{
+    "get": {
+        "tags": [
+            "Discounts"
+        ],
+        "summary": "Get Iconika laboratories list with pagination [FAKE]",
+        "operationId": "GetDiscountsFreeSalesIconikaLaboratories",
+        "parameters": [
+            {
+                "name": "type",
+                "in": "path",
+                "required": true,
+                "schema": {
+                    "type": "string",
+                    "enum": [
+                        "promotional",
+                        "parapharmacy"
+                    ],
+                    "example": "promotional"
+                }
+            },
+            {
+                "name": "from_month",
+                "in": "query",
+                "required": true,
+                "schema": {
+                    "type": "string",
+                    "example": "2025-01"
+                }
+            },
+            {
+                "name": "to_month",
+                "in": "query",
+                "required": true,
+                "schema": {
+                    "type": "string",
+                    "example": "2025-11"
+                }
+            },
+            {
+                "name": "organization_identifier",
+                "in": "query",
+                "required": false,
+                "schema": {
+                    "type": "string"
+                }
+            },
+            {
+                "name": "search_query",
+                "in": "query",
+                "required": false,
+                "schema": {
+                    "type": "string"
+                }
+            },
+            {
+                "name": "page",
+                "in": "query",
+                "required": false,
+                "schema": {
+                    "type": "integer",
+                    "example": 1
+                }
+            },
+            {
+                "name": "per_page",
+                "in": "query",
+                "required": false,
+                "schema": {
+                    "type": "integer",
+                    "example": 15
+                }
+            }
+        ],
+        "responses": {
+            "200": {
+                "description": "Paginated list of Iconika laboratories [FAKE DATA]"
+            },
+            "422": {
+                "$ref": "../../../../../../shared/responses/ValidationError.json"
+            },
+            "424": {
+                "$ref": "../../../../../../shared/responses/FailedDependency.json"
+            },
+            "500": {
+                "$ref": "../../../../../../shared/responses/InternalServerError.json"
+            }
+        }
+    }
+}

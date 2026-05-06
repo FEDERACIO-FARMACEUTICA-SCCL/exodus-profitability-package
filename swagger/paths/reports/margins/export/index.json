@@ -1,0 +1,62 @@
+{
+    "get": {
+        "tags": [
+            "Reports"
+        ],
+        "summary": "Export margins report to Excel [FAKE]",
+        "operationId": "ExportMarginsReport",
+        "parameters": [
+            {
+                "name": "from_month",
+                "in": "query",
+                "required": true,
+                "schema": {
+                    "type": "string",
+                    "example": "2024-01"
+                }
+            },
+            {
+                "name": "to_month",
+                "in": "query",
+                "required": true,
+                "schema": {
+                    "type": "string",
+                    "example": "2024-12"
+                }
+            },
+            {
+                "name": "laboratory",
+                "in": "query",
+                "required": false,
+                "schema": {
+                    "type": "string"
+                }
+            },
+            {
+                "name": "organization_identifier",
+                "in": "query",
+                "required": false,
+                "schema": {
+                    "type": "string"
+                }
+            }
+        ],
+        "responses": {
+            "200": {
+                "description": "Excel file download",
+                "content": {
+                    "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet": []
+                }
+            },
+            "422": {
+                "$ref": "../../../../shared/responses/ValidationError.json"
+            },
+            "424": {
+                "$ref": "../../../../shared/responses/FailedDependency.json"
+            },
+            "500": {
+                "$ref": "../../../../shared/responses/InternalServerError.json"
+            }
+        }
+    }
+}

@@ -1,0 +1,61 @@
+{
+    "get": {
+        "tags": [
+            "Reports"
+        ],
+        "summary": "Get discounts report",
+        "operationId": "GetDiscountsReport",
+        "parameters": [
+            {
+                "name": "year",
+                "in": "query",
+                "required": true,
+                "schema": {
+                    "type": "string",
+                    "example": "2024"
+                }
+            },
+            {
+                "name": "months[]",
+                "in": "query",
+                "required": true,
+                "schema": {
+                    "type": "array",
+                    "items": {
+                        "type": "integer"
+                    }
+                }
+            },
+            {
+                "name": "laboratory",
+                "in": "query",
+                "required": false,
+                "schema": {
+                    "type": "string"
+                }
+            },
+            {
+                "name": "organization_identifier",
+                "in": "query",
+                "required": false,
+                "schema": {
+                    "type": "string"
+                }
+            }
+        ],
+        "responses": {
+            "200": {
+                "description": "Discounts report data"
+            },
+            "422": {
+                "$ref": "../../../shared/responses/ValidationError.json"
+            },
+            "424": {
+                "$ref": "../../../shared/responses/FailedDependency.json"
+            },
+            "500": {
+                "$ref": "../../../shared/responses/InternalServerError.json"
+            }
+        }
+    }
+}

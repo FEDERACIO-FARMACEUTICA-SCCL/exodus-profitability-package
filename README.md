@@ -435,7 +435,11 @@ Used in free sales report methods.
 
 ## 📖 Swagger / OpenAPI
 
-The package ships a static OpenAPI spec (`swagger/api-docs.json`) and integrates with [l5-swagger](https://github.com/DarkaOnLine/L5-Swagger) for multi-documentation support.
+The package integrates with [l5-swagger](https://github.com/DarkaOnLine/L5-Swagger) for multi-documentation support. The spec is a static multi-file OpenAPI 3.0 structure — no annotation scanning, no code generation.
+
+On boot, the service provider copies the entire `swagger/` directory to `public/api-docs/exodus/`. The files in `public/` are served directly by the web server, which allows Swagger UI to resolve `$ref` links to individual path files.
+
+The config returned by `ProfitabilityExodusSwagger::config()` forces `generate_always => false`, so l5-swagger will never attempt to scan and regenerate this documentation.
 
 ### Setup
 
@@ -475,7 +479,40 @@ ProfitabilityExodusRouter::routes(prefix: 'profitability', middlewares: ['auth:s
 )
 ```
 
-> **Note:** Do not run `php artisan l5-swagger:generate exodus`. The spec is static and managed from `swagger/api-docs.json` inside the package. Running the generator would overwrite the storage copy with an empty spec.
+> **If your project also has its own l5-swagger documentation**, always generate it by name to avoid unintended side effects:
+> ```bash
+> # Correct — only regenerates your documentation
+> php artisan l5-swagger:generate your-doc-name
+>
+> # Wrong — triggers all documentations
+> php artisan l5-swagger:generate
+> ```
+
+### Spec structure (package contributors only)
+
+The spec is a multi-file OpenAPI structure. `api-docs.json` is the root file — it contains the metadata, components, and `$ref` links to individual path files. There is no build step.
+
+```
+swagger/
+├── api-docs.json          ← root file: metadata, tags, components, paths as $ref
+├── paths/                 ← one index.json per URL path, folder tree mirrors the URL
+│   ├── discounts/
+│   │   ├── index.json     → GET /discounts
+│   │   ├── detail/
+│   │   │   └── index.json → GET /discounts/detail
+│   │   └── ...
+│   └── ...
+└── shared/
+    └── responses/         ← reusable response objects (422, 424, 500, …)
+```
+
+To add or modify an endpoint:
+
+1. Edit (or create) the relevant `index.json` in `swagger/paths/`
+2. If it's a new path, add a `$ref` entry in `swagger/api-docs.json` under `paths`
+3. Commit the changed files
+
+No build or compile step required.
 
 ---
 

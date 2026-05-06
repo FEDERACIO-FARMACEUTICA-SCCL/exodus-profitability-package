@@ -1,0 +1,64 @@
+{
+    "get": {
+        "tags": [
+            "Organization Information"
+        ],
+        "summary": "Get organization information",
+        "operationId": "getOrganizationInformation",
+        "parameters": [
+            {
+                "name": "organization_identifier",
+                "in": "query",
+                "description": "Organization identifier filter",
+                "required": false,
+                "schema": {
+                    "type": "string",
+                    "example": "S77776"
+                }
+            }
+        ],
+        "responses": {
+            "200": {
+                "description": "Successful response with organization information",
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "type": {
+                                    "type": "string",
+                                    "example": "ICON"
+                                },
+                                "current_month_visible": {
+                                    "type": "boolean",
+                                    "example": true
+                                },
+                                "has_sellout": {
+                                    "type": "boolean",
+                                    "example": true
+                                },
+                                "comercial_organization_type": {
+                                    "type": "string",
+                                    "enum": [
+                                        "NO_SELLOUT",
+                                        "NO_SELLOUT_ICONIKA",
+                                        "NO_SELLOUT_CFI",
+                                        "SELLOUT_ICONIKA",
+                                        "SELLOUT_CFI"
+                                    ],
+                                    "example": "SELLOUT_ICONIKA"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "424": {
+                "$ref": "../../shared/responses/FailedDependency.json"
+            },
+            "500": {
+                "$ref": "../../shared/responses/InternalServerError.json"
+            }
+        }
+    }
+}

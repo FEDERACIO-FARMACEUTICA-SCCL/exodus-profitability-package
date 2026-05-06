@@ -1,0 +1,91 @@
+{
+    "get": {
+        "tags": [
+            "PVP Margin"
+        ],
+        "summary": "Get PVP margin data",
+        "operationId": "GetPvpMargin",
+        "parameters": [
+            {
+                "name": "from_month",
+                "in": "query",
+                "required": true,
+                "schema": {
+                    "type": "string",
+                    "example": "2024-01"
+                }
+            },
+            {
+                "name": "to_month",
+                "in": "query",
+                "required": true,
+                "schema": {
+                    "type": "string",
+                    "example": "2024-12"
+                }
+            },
+            {
+                "name": "organization_identifier",
+                "in": "query",
+                "required": false,
+                "schema": {
+                    "type": "string"
+                }
+            }
+        ],
+        "responses": {
+            "200": {
+                "description": "PVP margin data [FAKE DATA]",
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "items": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "object",
+                                        "properties": {
+                                            "type": {
+                                                "type": "string",
+                                                "example": "generics"
+                                            },
+                                            "margin_percentage": {
+                                                "type": "number",
+                                                "format": "float"
+                                            },
+                                            "minimum": {
+                                                "type": "number",
+                                                "format": "float"
+                                            },
+                                            "median": {
+                                                "type": "number",
+                                                "format": "float"
+                                            },
+                                            "maximum": {
+                                                "type": "number",
+                                                "format": "float"
+                                            }
+                                        }
+                                    }
+                                },
+                                "applied_filters": {
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "422": {
+                "$ref": "../../shared/responses/ValidationError.json"
+            },
+            "424": {
+                "$ref": "../../shared/responses/FailedDependency.json"
+            },
+            "500": {
+                "$ref": "../../shared/responses/InternalServerError.json"
+            }
+        }
+    }
+}

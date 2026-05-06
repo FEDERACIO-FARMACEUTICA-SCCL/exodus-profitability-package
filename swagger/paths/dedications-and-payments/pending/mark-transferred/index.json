@@ -1,0 +1,66 @@
+{
+    "patch": {
+        "tags": [
+            "Dedications & Payments"
+        ],
+        "summary": "Mark pending payments as transferred",
+        "operationId": "MarkPaymentsAsTransferred",
+        "requestBody": {
+            "required": false,
+            "content": {
+                "application/json": {
+                    "schema": {
+                        "type": "object",
+                        "properties": {
+                            "organization_identifier": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "responses": {
+            "200": {
+                "description": "Payments marked as transferred successfully",
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "message": {
+                                    "type": "string",
+                                    "example": "Transfer marked successfully"
+                                },
+                                "updated_count": {
+                                    "type": "integer",
+                                    "example": 9
+                                },
+                                "delivery_notes_ids": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "integer"
+                                    },
+                                    "example": [
+                                        9,
+                                        99,
+                                        999
+                                    ]
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "422": {
+                "$ref": "../../../../shared/responses/ValidationError.json"
+            },
+            "424": {
+                "$ref": "../../../../shared/responses/FailedDependency.json"
+            },
+            "500": {
+                "$ref": "../../../../shared/responses/InternalServerError.json"
+            }
+        }
+    }
+}

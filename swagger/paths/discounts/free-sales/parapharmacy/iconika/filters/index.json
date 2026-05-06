@@ -1,0 +1,33 @@
+{
+    "get": {
+        "tags": [
+            "Discounts"
+        ],
+        "summary": "Get Iconika parapharmacy filters [FAKE]",
+        "operationId": "GetDiscountsFreeSalesIconikaParapharmacyFilters",
+        "parameters": [
+            {
+                "name": "organization_identifier",
+                "in": "query",
+                "required": false,
+                "schema": {
+                    "type": "string"
+                }
+            }
+        ],
+        "responses": {
+            "200": {
+                "description": "Iconika parapharmacy filters data [FAKE DATA]"
+            },
+            "422": {
+                "$ref": "../../../../../../shared/responses/ValidationError.json"
+            },
+            "424": {
+                "$ref": "../../../../../../shared/responses/FailedDependency.json"
+            },
+            "500": {
+                "$ref": "../../../../../../shared/responses/InternalServerError.json"
+            }
+        }
+    }
+}

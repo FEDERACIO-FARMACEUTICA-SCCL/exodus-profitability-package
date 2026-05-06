@@ -1,0 +1,66 @@
+{
+    "get": {
+        "tags": [
+            "Reports"
+        ],
+        "summary": "Get available filters for reports",
+        "operationId": "GetReportsFilters",
+        "parameters": [
+            {
+                "name": "report_type",
+                "in": "path",
+                "required": true,
+                "schema": {
+                    "type": "string",
+                    "enum": [
+                        "discounts",
+                        "free-sales",
+                        "generics",
+                        "margins"
+                    ],
+                    "example": "discounts"
+                }
+            },
+            {
+                "name": "page",
+                "in": "query",
+                "required": false,
+                "schema": {
+                    "type": "integer",
+                    "example": 1
+                }
+            },
+            {
+                "name": "per_page",
+                "in": "query",
+                "required": false,
+                "schema": {
+                    "type": "integer",
+                    "example": 50
+                }
+            },
+            {
+                "name": "organization_identifier",
+                "in": "query",
+                "required": false,
+                "schema": {
+                    "type": "string"
+                }
+            }
+        ],
+        "responses": {
+            "200": {
+                "description": "Available filters for reports"
+            },
+            "422": {
+                "$ref": "../../../../shared/responses/ValidationError.json"
+            },
+            "424": {
+                "$ref": "../../../../shared/responses/FailedDependency.json"
+            },
+            "500": {
+                "$ref": "../../../../shared/responses/InternalServerError.json"
+            }
+        }
+    }
+}

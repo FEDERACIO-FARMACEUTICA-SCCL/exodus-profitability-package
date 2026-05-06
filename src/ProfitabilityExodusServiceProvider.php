@@ -2,6 +2,7 @@
 
 namespace ProfitabilityExodus;
 
+use FilesystemIterator;
 use Illuminate\Support\ServiceProvider;
 
 class ProfitabilityExodusServiceProvider extends ServiceProvider
@@ -12,7 +13,7 @@ class ProfitabilityExodusServiceProvider extends ServiceProvider
     public function boot(): void
     {
         $this->publishes([
-            __DIR__ . '/../config/profitability-exodus-sdk.php' => config_path('profitability-exodus-sdk.php'),
+            __DIR__ . '/../config/profitability-exodus-sdk.php' => config_path('profitability-exodus-sdk.php')
         ], 'profitability-exodus-sdk');
         $this->publishSwagger();
     }
@@ -22,39 +23,21 @@ class ProfitabilityExodusServiceProvider extends ServiceProvider
         $this->mergeConfigFrom(__DIR__ . '/../config/profitability-exodus-sdk.php', 'profitability-exodus-sdk');
     }
 
-    /**
-     * @throws \JsonException
-     */
-    private function publishSwagger(): void
+    private function copyDirectory(string $source, string $dest): void
     {
-        $docs_path = storage_path('api-docs/' . ProfitabilityExodusSwagger::DOCS_STORAGE_PATH);
-        $this->makeFolder($docs_path);
-        $source_path = __DIR__ . '/../swagger/api-docs.json';
-        $destination_path = $docs_path . '/api-docs.json';
-
-        if (!file_exists($destination_path) || filemtime($source_path) > filemtime($destination_path)) {
-            copy($source_path, $destination_path);
+        $this->makeFolder($dest);
+        $iterator = new \RecursiveIteratorIterator(
+            new \RecursiveDirectoryIterator($source, FilesystemIterator::SKIP_DOTS),
+            \RecursiveIteratorIterator::SELF_FIRST
+        );
+        foreach ($iterator as $item) {
+            $target = $dest . DIRECTORY_SEPARATOR . $iterator->getSubPathname();
+            if ($item->isDir()) {
+                $this->makeFolder($target);
+            } else {
+                copy($item->getPathname(), $target);
+            }
         }
-
-        $configured_servers = config('l5-swagger.documentations.exodus.paths.servers', []);
-
-        if (empty($configured_servers)) {
-            return;
-        }
-
-        $content = file_get_contents($destination_path);
-        $json = $content !== false ? json_decode($content, true, 512, JSON_THROW_ON_ERROR) : null;
-
-        if ($json === null) {
-            return;
-        }
-
-        $json['servers'] = $configured_servers;
-
-        file_put_contents($destination_path, json_encode(
-            $json,
-            JSON_THROW_ON_ERROR | JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE
-        ), LOCK_EX);
     }
 
     private function makeFolder(string $folder): void
@@ -66,5 +49,31 @@ class ProfitabilityExodusServiceProvider extends ServiceProvider
         if (!mkdir($folder, 0755, true) && !is_dir($folder)) {
             throw new \RuntimeException(sprintf('Directory "%s" was not created', $folder));
         }
+    }
+
+    /**
+     * @throws \JsonException
+     */
+    private function publishSwagger(): void
+    {
+        $source = __DIR__ . '/../swagger';
+        $dest = public_path('api-docs/' . ProfitabilityExodusSwagger::DOCS_STORAGE_PATH);
+        $dest_file = $dest . '/api-docs.json';
+
+        $this->copyDirectory($source, $dest);
+
+        $configured_servers = config('l5-swagger.documentations.exodus.paths.servers', []);
+
+        if (empty($configured_servers)) {
+            return;
+        }
+
+        $json = json_decode(file_get_contents($dest_file), true, 512, JSON_THROW_ON_ERROR);
+        $json['servers'] = $configured_servers;
+        file_put_contents(
+            $dest_file,
+            json_encode($json, JSON_THROW_ON_ERROR | JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE),
+            LOCK_EX
+        );
     }
 }

@@ -1,0 +1,102 @@
+{
+    "get": {
+        "tags": [
+            "Dedications & Payments"
+        ],
+        "summary": "Get dedications & payments report",
+        "operationId": "GetDedicationsAndPaymentsReport",
+        "parameters": [
+            {
+                "name": "from_month",
+                "in": "query",
+                "required": true,
+                "schema": {
+                    "type": "string",
+                    "example": "2024-01"
+                }
+            },
+            {
+                "name": "to_month",
+                "in": "query",
+                "required": true,
+                "schema": {
+                    "type": "string",
+                    "example": "2024-12"
+                }
+            },
+            {
+                "name": "organization_identifier",
+                "in": "query",
+                "required": false,
+                "schema": {
+                    "type": "string"
+                }
+            }
+        ],
+        "responses": {
+            "200": {
+                "description": "Dedications and payments data",
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "dedication": {
+                                    "type": "number",
+                                    "format": "float",
+                                    "example": 999.99
+                                },
+                                "dedication_agreed": {
+                                    "type": "number",
+                                    "format": "float",
+                                    "example": 99.99
+                                },
+                                "dedication_agreed_end": {
+                                    "type": "string",
+                                    "format": "date-time"
+                                },
+                                "dedication_logistic": {
+                                    "type": "number",
+                                    "format": "float",
+                                    "example": 99.99
+                                },
+                                "dedication_logistic_end": {
+                                    "type": "string",
+                                    "format": "date-time"
+                                },
+                                "amount_paid": {
+                                    "type": "number",
+                                    "format": "float",
+                                    "example": 999.99
+                                },
+                                "outstanding_amount": {
+                                    "type": "number",
+                                    "format": "float",
+                                    "example": 999.99
+                                },
+                                "total_amount": {
+                                    "type": "number",
+                                    "format": "float",
+                                    "example": 999.99
+                                },
+                                "organization_rank_description": {
+                                    "type": "string",
+                                    "example": "Lorem ipsum"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "422": {
+                "$ref": "../../shared/responses/ValidationError.json"
+            },
+            "424": {
+                "$ref": "../../shared/responses/FailedDependency.json"
+            },
+            "500": {
+                "$ref": "../../shared/responses/InternalServerError.json"
+            }
+        }
+    }
+}

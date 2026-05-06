@@ -1,0 +1,100 @@
+{
+    "get": {
+        "tags": [
+            "Discounts"
+        ],
+        "summary": "Get free sales discounts list with pagination",
+        "operationId": "GetDiscountsFreeSales",
+        "parameters": [
+            {
+                "name": "type",
+                "in": "path",
+                "required": true,
+                "schema": {
+                    "type": "string",
+                    "enum": [
+                        "promotional",
+                        "parapharmacy"
+                    ],
+                    "example": "promotional"
+                }
+            },
+            {
+                "name": "organization_identifier",
+                "in": "query",
+                "required": false,
+                "schema": {
+                    "type": "string",
+                    "example": "S77776"
+                }
+            },
+            {
+                "name": "search_query",
+                "in": "query",
+                "required": false,
+                "schema": {
+                    "type": "string"
+                }
+            },
+            {
+                "name": "page",
+                "in": "query",
+                "required": false,
+                "schema": {
+                    "type": "integer",
+                    "example": 1
+                }
+            },
+            {
+                "name": "per_page",
+                "in": "query",
+                "required": false,
+                "schema": {
+                    "type": "integer",
+                    "example": 15
+                }
+            }
+        ],
+        "responses": {
+            "200": {
+                "description": "Paginated list of free sales discounts [FAKE DATA]",
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "items": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "object"
+                                    }
+                                },
+                                "total_count": {
+                                    "type": "integer"
+                                },
+                                "page": {
+                                    "type": "integer"
+                                },
+                                "page_size": {
+                                    "type": "integer"
+                                },
+                                "total_pages": {
+                                    "type": "integer"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "422": {
+                "$ref": "../../../../shared/responses/ValidationError.json"
+            },
+            "424": {
+                "$ref": "../../../../shared/responses/FailedDependency.json"
+            },
+            "500": {
+                "$ref": "../../../../shared/responses/InternalServerError.json"
+            }
+        }
+    }
+}

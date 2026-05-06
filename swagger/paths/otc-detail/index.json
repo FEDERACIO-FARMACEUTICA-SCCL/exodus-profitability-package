@@ -1,0 +1,82 @@
+{
+    "get": {
+        "tags": [
+            "OTC Detail"
+        ],
+        "summary": "Get OTC detail data",
+        "operationId": "GetOtcDetail",
+        "parameters": [
+            {
+                "name": "organization_identifier",
+                "in": "query",
+                "required": false,
+                "schema": {
+                    "type": "string"
+                }
+            },
+            {
+                "name": "otc_type",
+                "in": "query",
+                "required": true,
+                "schema": {
+                    "type": "string",
+                    "example": "PROMOTIONAL"
+                },
+                "description": "OTC type filter (PROMOTIONAL, PARAPHARMACY)"
+            }
+        ],
+        "responses": {
+            "200": {
+                "description": "OTC detail data [FAKE DATA]",
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "pharmacy_summary": {
+                                    "type": "object",
+                                    "properties": {
+                                        "billing_amount": {
+                                            "type": "number",
+                                            "format": "float"
+                                        },
+                                        "fedefarma_purchase_rotation": {
+                                            "type": "number",
+                                            "format": "float"
+                                        },
+                                        "direct_purchase_rotation": {
+                                            "type": "number",
+                                            "format": "float"
+                                        }
+                                    }
+                                },
+                                "items": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "object"
+                                    }
+                                },
+                                "data_reliability": {
+                                    "type": "boolean",
+                                    "example": true
+                                },
+                                "applied_filters": {
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "422": {
+                "$ref": "../../shared/responses/ValidationError.json"
+            },
+            "424": {
+                "$ref": "../../shared/responses/FailedDependency.json"
+            },
+            "500": {
+                "$ref": "../../shared/responses/InternalServerError.json"
+            }
+        }
+    }
+}

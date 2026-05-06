@@ -1,0 +1,140 @@
+{
+    "get": {
+        "tags": [
+            "Discounts"
+        ],
+        "summary": "Get generics discounts list with pagination",
+        "operationId": "GetDiscountsGenerics",
+        "parameters": [
+            {
+                "name": "from_month",
+                "in": "query",
+                "required": true,
+                "schema": {
+                    "type": "string",
+                    "example": "2025-01"
+                }
+            },
+            {
+                "name": "to_month",
+                "in": "query",
+                "required": true,
+                "schema": {
+                    "type": "string",
+                    "example": "2025-11"
+                }
+            },
+            {
+                "name": "organization_identifier",
+                "in": "query",
+                "required": false,
+                "schema": {
+                    "type": "string",
+                    "example": "S77776"
+                }
+            },
+            {
+                "name": "search_query",
+                "in": "query",
+                "required": false,
+                "schema": {
+                    "type": "string"
+                }
+            },
+            {
+                "name": "page",
+                "in": "query",
+                "required": false,
+                "schema": {
+                    "type": "integer",
+                    "example": 1
+                }
+            },
+            {
+                "name": "per_page",
+                "in": "query",
+                "required": false,
+                "schema": {
+                    "type": "integer",
+                    "example": 15
+                }
+            }
+        ],
+        "responses": {
+            "200": {
+                "description": "Paginated list of generic discounts",
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "items": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "object",
+                                        "properties": {
+                                            "national_code": {
+                                                "type": "string",
+                                                "example": "CN001"
+                                            },
+                                            "description": {
+                                                "type": "string"
+                                            },
+                                            "laboratory_name": {
+                                                "type": "string"
+                                            },
+                                            "taxes": {
+                                                "type": "number",
+                                                "format": "float",
+                                                "example": 21
+                                            },
+                                            "pvl": {
+                                                "type": "number",
+                                                "format": "float",
+                                                "example": 9999.99
+                                            },
+                                            "discount_percentage": {
+                                                "type": "number",
+                                                "format": "float",
+                                                "example": 99.9
+                                            },
+                                            "discount_origin": {
+                                                "type": "string"
+                                            },
+                                            "price": {
+                                                "type": "number",
+                                                "format": "float",
+                                                "example": 99.99
+                                            }
+                                        }
+                                    }
+                                },
+                                "total_count": {
+                                    "type": "integer"
+                                },
+                                "page": {
+                                    "type": "integer"
+                                },
+                                "page_size": {
+                                    "type": "integer"
+                                },
+                                "total_pages": {
+                                    "type": "integer"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "422": {
+                "$ref": "../../../shared/responses/ValidationError.json"
+            },
+            "424": {
+                "$ref": "../../../shared/responses/FailedDependency.json"
+            },
+            "500": {
+                "$ref": "../../../shared/responses/InternalServerError.json"
+            }
+        }
+    }
+}

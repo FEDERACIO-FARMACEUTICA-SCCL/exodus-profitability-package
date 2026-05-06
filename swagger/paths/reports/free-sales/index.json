@@ -1,0 +1,75 @@
+{
+    "get": {
+        "tags": [
+            "Reports"
+        ],
+        "summary": "Get free sales report",
+        "operationId": "GetFreeSalesReport",
+        "parameters": [
+            {
+                "name": "year",
+                "in": "query",
+                "required": true,
+                "schema": {
+                    "type": "string",
+                    "example": "2024"
+                }
+            },
+            {
+                "name": "months[]",
+                "in": "query",
+                "required": true,
+                "schema": {
+                    "type": "array",
+                    "items": {
+                        "type": "integer"
+                    }
+                }
+            },
+            {
+                "name": "classification_type",
+                "in": "query",
+                "required": false,
+                "schema": {
+                    "type": "string",
+                    "enum": [
+                        "ALL",
+                        "PARAPHARMACY",
+                        "PROMOTIONAL"
+                    ],
+                    "default": "ALL"
+                }
+            },
+            {
+                "name": "laboratory",
+                "in": "query",
+                "required": false,
+                "schema": {
+                    "type": "string"
+                }
+            },
+            {
+                "name": "organization_identifier",
+                "in": "query",
+                "required": false,
+                "schema": {
+                    "type": "string"
+                }
+            }
+        ],
+        "responses": {
+            "200": {
+                "description": "Free sales report data"
+            },
+            "422": {
+                "$ref": "../../../shared/responses/ValidationError.json"
+            },
+            "424": {
+                "$ref": "../../../shared/responses/FailedDependency.json"
+            },
+            "500": {
+                "$ref": "../../../shared/responses/InternalServerError.json"
+            }
+        }
+    }
+}

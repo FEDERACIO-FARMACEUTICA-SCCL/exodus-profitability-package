@@ -1,0 +1,73 @@
+{
+    "get": {
+        "tags": [
+            "Reports"
+        ],
+        "summary": "Export generics report to Excel [FAKE]",
+        "operationId": "ExportGenericsReport",
+        "parameters": [
+            {
+                "name": "year",
+                "in": "query",
+                "required": true,
+                "schema": {
+                    "type": "string",
+                    "example": "2024"
+                }
+            },
+            {
+                "name": "months[]",
+                "in": "query",
+                "required": true,
+                "schema": {
+                    "type": "array",
+                    "items": {
+                        "type": "integer"
+                    }
+                }
+            },
+            {
+                "name": "laboratory",
+                "in": "query",
+                "required": false,
+                "schema": {
+                    "type": "string"
+                }
+            },
+            {
+                "name": "filter_only_club",
+                "in": "query",
+                "required": false,
+                "schema": {
+                    "type": "boolean",
+                    "default": false
+                }
+            },
+            {
+                "name": "organization_identifier",
+                "in": "query",
+                "required": false,
+                "schema": {
+                    "type": "string"
+                }
+            }
+        ],
+        "responses": {
+            "200": {
+                "description": "Excel file download",
+                "content": {
+                    "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet": []
+                }
+            },
+            "422": {
+                "$ref": "../../../../shared/responses/ValidationError.json"
+            },
+            "424": {
+                "$ref": "../../../../shared/responses/FailedDependency.json"
+            },
+            "500": {
+                "$ref": "../../../../shared/responses/InternalServerError.json"
+            }
+        }
+    }
+}

@@ -1,0 +1,66 @@
+{
+    "get": {
+        "tags": [
+            "Discounts"
+        ],
+        "summary": "Get Iconika categories for parapharmacy",
+        "operationId": "GetDiscountsFreeSalesIconikaCategories",
+        "parameters": [
+            {
+                "name": "type",
+                "in": "path",
+                "required": true,
+                "schema": {
+                    "type": "string",
+                    "enum": [
+                        "parapharmacy"
+                    ],
+                    "example": "parapharmacy"
+                }
+            },
+            {
+                "name": "from_month",
+                "in": "query",
+                "required": false,
+                "schema": {
+                    "type": "string",
+                    "example": "2025-01"
+                }
+            },
+            {
+                "name": "to_month",
+                "in": "query",
+                "required": false,
+                "schema": {
+                    "type": "string",
+                    "example": "2025-11"
+                }
+            },
+            {
+                "name": "organization_identifier",
+                "in": "query",
+                "required": false,
+                "schema": {
+                    "type": "string"
+                }
+            }
+        ],
+        "responses": {
+            "200": {
+                "description": "Iconika categories data"
+            },
+            "404": {
+                "description": "Not found - Filters only available for parapharmacy type"
+            },
+            "422": {
+                "$ref": "../../../../../../shared/responses/ValidationError.json"
+            },
+            "424": {
+                "$ref": "../../../../../../shared/responses/FailedDependency.json"
+            },
+            "500": {
+                "$ref": "../../../../../../shared/responses/InternalServerError.json"
+            }
+        }
+    }
+}

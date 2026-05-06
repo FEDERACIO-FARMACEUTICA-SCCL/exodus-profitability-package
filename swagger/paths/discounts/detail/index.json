@@ -1,0 +1,104 @@
+{
+    "get": {
+        "tags": [
+            "Discounts"
+        ],
+        "summary": "Get discounts detail by type",
+        "operationId": "GetDiscountsDetail",
+        "parameters": [
+            {
+                "name": "from_month",
+                "in": "query",
+                "required": true,
+                "schema": {
+                    "type": "string",
+                    "example": "2025-01"
+                }
+            },
+            {
+                "name": "to_month",
+                "in": "query",
+                "required": true,
+                "schema": {
+                    "type": "string",
+                    "example": "2025-11"
+                }
+            },
+            {
+                "name": "organization_identifier",
+                "in": "query",
+                "required": false,
+                "schema": {
+                    "type": "string",
+                    "example": "S77776"
+                }
+            }
+        ],
+        "responses": {
+            "200": {
+                "description": "Discounts detail data [FAKE DATA]",
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "headers": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "object",
+                                        "properties": {
+                                            "concept": {
+                                                "type": "string",
+                                                "example": "total_discount_generics"
+                                            },
+                                            "discount_amount": {
+                                                "type": "number",
+                                                "format": "float",
+                                                "example": 9999.99
+                                            },
+                                            "products_with_discount": {
+                                                "type": "integer",
+                                                "nullable": true
+                                            },
+                                            "medium_discount_percentage": {
+                                                "type": "number",
+                                                "format": "float",
+                                                "example": 99.9
+                                            }
+                                        }
+                                    }
+                                },
+                                "applied_filters": {
+                                    "type": "object",
+                                    "properties": {
+                                        "organization_identifier": {
+                                            "type": "string",
+                                            "example": "S77776"
+                                        },
+                                        "from_month": {
+                                            "type": "string",
+                                            "example": "2025-01"
+                                        },
+                                        "to_month": {
+                                            "type": "string",
+                                            "example": "2025-11"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "422": {
+                "$ref": "../../../shared/responses/ValidationError.json"
+            },
+            "424": {
+                "$ref": "../../../shared/responses/FailedDependency.json"
+            },
+            "500": {
+                "$ref": "../../../shared/responses/InternalServerError.json"
+            }
+        }
+    }
+}

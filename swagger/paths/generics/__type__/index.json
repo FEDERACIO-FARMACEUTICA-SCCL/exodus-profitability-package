@@ -1,0 +1,48 @@
+{
+    "get": {
+        "tags": [
+            "Generics"
+        ],
+        "summary": "Get generics detail by type",
+        "operationId": "GetGenericsDetail",
+        "parameters": [
+            {
+                "name": "type",
+                "in": "path",
+                "required": true,
+                "schema": {
+                    "type": "string",
+                    "enum": [
+                        "acofarma",
+                        "concentration",
+                        "generification"
+                    ],
+                    "example": "acofarma"
+                }
+            },
+            {
+                "name": "organization_identifier",
+                "in": "query",
+                "required": false,
+                "schema": {
+                    "type": "string",
+                    "example": "S77776"
+                }
+            }
+        ],
+        "responses": {
+            "200": {
+                "description": "Generics detail data. Response structure varies by type."
+            },
+            "422": {
+                "$ref": "../../../shared/responses/ValidationError.json"
+            },
+            "424": {
+                "$ref": "../../../shared/responses/FailedDependency.json"
+            },
+            "500": {
+                "$ref": "../../../shared/responses/InternalServerError.json"
+            }
+        }
+    }
+}

@@ -1,0 +1,62 @@
+{
+    "get": {
+        "tags": [
+            "Discounts"
+        ],
+        "summary": "Export free sales discounts to Excel",
+        "operationId": "ExportDiscountsFreeSales",
+        "parameters": [
+            {
+                "name": "type",
+                "in": "path",
+                "required": true,
+                "schema": {
+                    "type": "string",
+                    "enum": [
+                        "promotional",
+                        "parapharmacy"
+                    ],
+                    "example": "promotional"
+                }
+            },
+            {
+                "name": "organization_identifier",
+                "in": "query",
+                "required": false,
+                "schema": {
+                    "type": "string"
+                }
+            },
+            {
+                "name": "search_query",
+                "in": "query",
+                "required": false,
+                "schema": {
+                    "type": "string"
+                }
+            }
+        ],
+        "responses": {
+            "200": {
+                "description": "Excel file download",
+                "content": {
+                    "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet": {
+                        "schema": {
+                            "type": "string",
+                            "format": "binary"
+                        }
+                    }
+                }
+            },
+            "422": {
+                "$ref": "../../../../../shared/responses/ValidationError.json"
+            },
+            "424": {
+                "$ref": "../../../../../shared/responses/FailedDependency.json"
+            },
+            "500": {
+                "$ref": "../../../../../shared/responses/InternalServerError.json"
+            }
+        }
+    }
+}

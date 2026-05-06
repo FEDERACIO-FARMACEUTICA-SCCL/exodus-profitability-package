@@ -32,11 +32,13 @@ class ProfitabilityExodusServiceProvider extends ServiceProvider
         );
         foreach ($iterator as $item) {
             $target = $dest . DIRECTORY_SEPARATOR . $iterator->getSubPathname();
+
             if ($item->isDir()) {
                 $this->makeFolder($target);
-            } else {
-                copy($item->getPathname(), $target);
+                continue;
             }
+
+            copy($item->getPathname(), $target);
         }
     }
 
